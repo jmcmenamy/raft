@@ -25,6 +25,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/DistributedClocks/GoVector/govec"
 	"go.etcd.io/raft/v3/confchange"
 	"go.etcd.io/raft/v3/quorum"
 	pb "go.etcd.io/raft/v3/raftpb"
@@ -243,7 +244,8 @@ type Config struct {
 
 	// Logger is the logger used for raft log. For multinode which can host
 	// multiple raft group, each raft group can have its own logger
-	Logger Logger
+	Logger       Logger
+	shivizLogger govec.GoLog
 
 	// DisableProposalForwarding set to true means that followers will drop
 	// proposals, rather than forwarding them to the leader. One use case for
