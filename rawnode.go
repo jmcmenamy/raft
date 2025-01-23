@@ -16,6 +16,7 @@ package raft
 
 import (
 	"errors"
+	"fmt"
 
 	pb "go.etcd.io/raft/v3/raftpb"
 	"go.etcd.io/raft/v3/tracker"
@@ -88,6 +89,7 @@ func (rn *RawNode) Campaign() error {
 
 // Propose proposes data be appended to the raft log.
 func (rn *RawNode) Propose(data []byte) error {
+	fmt.Printf("IN RAFT RAW NODE")
 	return rn.raft.Step(pb.Message{
 		Type: pb.MsgProp,
 		From: rn.raft.id,

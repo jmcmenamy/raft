@@ -512,6 +512,7 @@ func (r *raft) hardState() pb.HardState {
 // send schedules persisting state to a stable storage and AFTER that
 // sending the message (as part of next Ready message processing).
 func (r *raft) send(m pb.Message) {
+	fmt.Printf("raft %v sending message to %v\n", r.id, m.To)
 	if m.From == None {
 		m.From = r.id
 	}
@@ -1086,6 +1087,8 @@ func (r *raft) poll(id uint64, t pb.MessageType, v bool) (granted int, rejected 
 
 func (r *raft) Step(m pb.Message) error {
 	traceReceiveMessage(r, &m)
+
+	fmt.Printf("received message in step id is %v\n", r.id)
 
 	// Handle the message term, which may result in our stepping down to a follower.
 	switch {

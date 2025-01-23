@@ -17,6 +17,7 @@ package raft
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	pb "go.etcd.io/raft/v3/raftpb"
 )
@@ -384,6 +385,7 @@ func (n *node) run() {
 		// described in raft dissertation)
 		// Currently it is dropped in Step silently.
 		case pm := <-propc:
+			fmt.Printf("here received on channel id is %v\n", r.id)
 			m := pm.m
 			m.From = r.id
 			err := r.Step(m)
@@ -467,6 +469,7 @@ func (n *node) Tick() {
 func (n *node) Campaign(ctx context.Context) error { return n.step(ctx, pb.Message{Type: pb.MsgHup}) }
 
 func (n *node) Propose(ctx context.Context, data []byte) error {
+	fmt.Printf("%v IN RAFT not raw node\n", n.rn.raft.id)
 	return n.stepWait(ctx, pb.Message{Type: pb.MsgProp, Entries: []pb.Entry{{Data: data}}})
 }
 
@@ -521,6 +524,7 @@ func (n *node) stepWithWaitOption(ctx context.Context, m pb.Message, wait bool) 
 	if wait {
 		pm.result = make(chan error, 1)
 	}
+	fmt.Printf("got here gonna send on channel? %v\n", n.rn.raft.id)
 	select {
 	case ch <- pm:
 		if !wait {
