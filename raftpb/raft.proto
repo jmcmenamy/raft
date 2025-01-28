@@ -105,6 +105,8 @@ message Message {
 	// to respond and who to respond to when the work associated with a message
 	// is complete. Populated for MsgStorageAppend and MsgStorageApply messages.
 	repeated Message     responses   = 14 [(gogoproto.nullable) = false];
+
+	optional bytes Shivizdata = 20 [(gogoproto.nullable) = true];
 }
 
 message HardState {

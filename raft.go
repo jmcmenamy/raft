@@ -1088,7 +1088,7 @@ func (r *raft) poll(id uint64, t pb.MessageType, v bool) (granted int, rejected 
 func (r *raft) Step(m pb.Message) error {
 	traceReceiveMessage(r, &m)
 
-	fmt.Printf("received message in step id is %v\n", r.id)
+	fmt.Printf("received message in step id is %v types is %v\n", r.id, m.Type)
 
 	// Handle the message term, which may result in our stepping down to a follower.
 	switch {
