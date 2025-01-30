@@ -351,6 +351,7 @@ func (n *node) run() {
 
 	lead := None
 
+	fmt.Printf("Entering for loop for %v\n", n.rn.raft.id)
 	for {
 		if advancec == nil && n.rn.HasReady() {
 			// Populate a Ready. Note that this Ready is not guaranteed to
@@ -450,9 +451,11 @@ func (n *node) run() {
 			c <- getStatus(r)
 		case <-n.stop:
 			close(n.done)
+			fmt.Printf("Exiting for loop for %v\n", n.rn.raft.id)
 			return
 		}
 	}
+	fmt.Printf("Exiting for loop for %v\n", n.rn.raft.id)
 }
 
 // Tick increments the internal logical clock for this Node. Election timeouts
@@ -527,6 +530,7 @@ func (n *node) stepWithWaitOption(ctx context.Context, m pb.Message, wait bool) 
 	fmt.Printf("got here gonna send on channel? %v\n", n.rn.raft.id)
 	select {
 	case ch <- pm:
+		// fmt.Printf("Successfully sent on channel?\n")
 		if !wait {
 			return nil
 		}
